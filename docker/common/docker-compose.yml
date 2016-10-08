@@ -1,0 +1,137 @@
+eurekaserver:
+   image:   johncarnell/tmx-eurekasvr:chapter7
+   ports:
+       - "8761:8761"
+
+configserver:
+    image: johncarnell/tmx-confsvr:chapter7
+    ports:
+       - "8888:8888"
+    links:
+       - "eurekaserver:eurekaserver"
+    environment:
+       EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+
+zuulserver:
+    image: johncarnell/tmx-zuulsvr:chapter7
+    ports:
+      - "5555:5555"
+    links:
+      - "eurekaserver:eurekaserver"
+      - "fluentd:fluentd"
+      - "configserver:configserver"
+      - "orgservice-new:orgservice-new"
+    environment:
+      PROFILE: "default"
+      SERVER_PORT: "5555"
+      CONFIGSERVER_URI: "http://configserver:8888"
+      EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+
+database:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=p0stgr@s
+      - POSTGRES_DB=eagle_eye_local
+
+licensingservice:
+    image: johncarnell/tmx-licensing-service:chapter7
+    ports:
+      - "8080:8080"
+    links:
+      - "database:database"
+      - "configserver:configserver"
+      - "eurekaserver:eurekaserver"
+      - "fluentd:fluentd"
+      - "zuulserver:zuulserver"
+    environment:
+      PROFILE: "default"
+      SERVER_PORT: "8080"
+      CONFIGSERVER_URI: "http://configserver:8888"
+      EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+
+organizationservice:
+    image: johncarnell/tmx-organization-service:chapter7
+    ports:
+      - "8085:8085"
+    links:
+      - "database:database"
+      - "configserver:configserver"
+      - "eurekaserver:eurekaserver"
+      - "es:es"
+      - "fluentd:fluentd"
+    environment:
+      PROFILE: "default"
+      SERVER_PORT: "8085"
+      CONFIGSERVER_URI: "http://configserver:8888"
+      EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+
+orgservice-new:
+    image: johncarnell/tmx-orgservice-new:chapter7
+    ports:
+      - "8087:8087"
+    links:
+      - "database:database"
+      - "configserver:configserver"
+      - "eurekaserver:eurekaserver"
+      - "es:es"
+      - "fluentd:fluentd"
+    environment:
+      PROFILE: "default"
+      SERVER_PORT: "8087"
+      CONFIGSERVER_URI: "http://configserver:8888"
+      EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+
+authenticationservice:
+    image: johncarnell/tmx-authentication-service:chapter7
+    ports:
+      - "8901:8901"
+    links:
+      - "database:database"
+      - "configserver:configserver"
+      - "eurekaserver:eurekaserver"
+      - "zuulserver:zuulserver"
+      - "fluentd:fluentd"
+    environment:
+      PROFILE: "default"
+      SERVER_PORT: "8901"
+      CONFIGSERVER_URI: "http://configserver:8888"
+      EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+
+specialroutes-service:
+    image: johncarnell/tmx-specialroutes-service:chapter7
+    ports:
+      - "8910:8910"
+    links:
+      - "database:database"
+      - "configserver:configserver"
+      - "eurekaserver:eurekaserver"
+      - "fluentd:fluentd"
+    environment:
+      PROFILE: "default"
+      SERVER_PORT: "8910"
+      CONFIGSERVER_URI: "http://configserver:8888"
+      EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+
+es:
+  image: elasticsearch:2
+  ports:
+    - 9200:9200
+    - 9300:9300
+
+kibana:
+  image: kibana
+  ports:
+    - 5601:5601
+  links:
+    - es:elasticsearch
+
+fluentd:
+    image: johncarnell/tmx-fluentd:chapter7
+    ports:
+      - 24224:24224
+      - 9980:9980
+    links:
+      - es:es
