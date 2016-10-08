@@ -14,7 +14,7 @@
     <!--Docker build Config-->
     <properties>
         <docker.image.name>johncarnell/tmx-fluentd</docker.image.name>
-        <docker.image.tag>chapter6</docker.image.tag>
+        <docker.image.tag>chapter7</docker.image.tag>
     </properties>
 
     <build>
