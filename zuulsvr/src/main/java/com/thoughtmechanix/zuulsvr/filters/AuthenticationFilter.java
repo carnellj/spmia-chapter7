@@ -19,7 +19,7 @@ import java.util.List;
 @Component
 public class AuthenticationFilter extends ZuulFilter {
     private static final int FILTER_ORDER =  2;
-    private static final boolean  SHOULD_FILTER=true;
+    private static final boolean  SHOULD_FILTER=false;
 
     @Autowired
     FilterUtils filterUtils;

@@ -23,7 +23,7 @@ public class OrganizationRestTemplateClient {
         logger.debug(">>> In Licensing Service.getOrganization: {}", UserContext.getCorrelationId());
         ResponseEntity<Organization> restExchange =
                 restTemplate.exchange(
-                        "http://zuulserver:5555/api/organization/v1/organizations/{organizationId}",
+                        "http://zuulservice/api/organization/v1/organizations/{organizationId}",
                         HttpMethod.GET,
                         null, Organization.class, organizationId);
         return restExchange.getBody();

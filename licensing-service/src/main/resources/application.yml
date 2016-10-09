@@ -13,3 +13,24 @@ logging:
     com.netflix: WARN
     org.springframework.web: WARN
     com.thoughtmechanix: DEBUG
+
+spring:
+  cloud:
+    stream:
+      bindings:
+        output:
+          destination:  timerTopic
+          content-type: application/json
+        input:
+          destination: timerTopic
+          content-type: application/json
+          group: timerGroup
+          consumer:
+              resetOffsets: true
+          zkNodes: kafka
+      kafka:
+        binder:
+          zkNodes: localhost
+          brokers: localhost
+
+

@@ -75,11 +75,17 @@
       <artifactId>postgresql</artifactId>
       <version>9.1-901.jdbc4</version>
     </dependency>
+
     <dependency>
-      <groupId>com.netflix.hystrix</groupId>
-      <artifactId>hystrix-core</artifactId>
-      <version>1.0.2</version>
-    </dependency>
+       <groupId>org.springframework.cloud</groupId>
+       <artifactId>spring-cloud-stream</artifactId>
+   </dependency>
+   
+   <dependency>
+       <groupId>org.springframework.cloud</groupId>
+       <artifactId>spring-cloud-starter-stream-kafka</artifactId>
+   </dependency>
+
     <dependency>
       <groupId>org.fluentd</groupId>
       <artifactId>fluent-logger</artifactId>
