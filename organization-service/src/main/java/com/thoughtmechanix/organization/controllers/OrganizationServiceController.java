@@ -22,16 +22,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 public class OrganizationServiceController {
     @Autowired
     private OrganizationService orgService;
-
-    private Source source;
-
-
     private static final Logger logger = LoggerFactory.getLogger(OrganizationServiceController.class);
-
-
-    @Autowired
-    SimpleSourceBean simpleSourceBean;
-
 
     @RequestMapping(value="/{organizationId}",method = RequestMethod.GET)
     public Organization getOrganization( @PathVariable("organizationId") String organizationId) {
@@ -39,13 +30,13 @@ public class OrganizationServiceController {
 
         Organization org = orgService.getOrg(organizationId);
         org.setContactName(org.getContactName());
-        simpleSourceBean.publishOrgChange(organizationId);
         return org;
     }
 
     @RequestMapping(value="/{organizationId}",method = RequestMethod.PUT)
     public void updateOrganization( @PathVariable("organizationId") String orgId, @RequestBody Organization org) {
         orgService.updateOrg( org );
+
     }
 
     @RequestMapping(value="/{organizationId}",method = RequestMethod.POST)

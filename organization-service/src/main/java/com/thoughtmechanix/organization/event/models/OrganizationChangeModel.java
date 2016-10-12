@@ -4,15 +4,13 @@ public class OrganizationChangeModel{
     private String type;
     private String action;
     private String organizationId;
-    private String dateTimeChange;
 
 
-    public  OrganizationChangeModel(String type, String action, String organizationId, String dateTimeChange) {
+    public  OrganizationChangeModel(String type, String action, String organizationId) {
         super();
         this.type   = type;
         this.action = action;
         this.organizationId = organizationId;
-        this.dateTimeChange = dateTimeChange;
     }
 
     public String getType() {
@@ -40,11 +38,4 @@ public class OrganizationChangeModel{
         this.organizationId = organizationId;
     }
 
-    public String getDateTimeChange() {
-        return dateTimeChange;
-    }
-
-    public void setDateTimeChange(String dateTimeChange) {
-        this.dateTimeChange = dateTimeChange;
-    }
 }

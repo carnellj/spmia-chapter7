@@ -47,6 +47,7 @@ licensingservice:
       - "fluentd:fluentd"
       - "zuulserver:zuulserver"
       - "kafkaserver:kafkaserver"
+      - "redis:redis"
     environment:
       PROFILE: "default"
       SERVER_PORT: "8080"
