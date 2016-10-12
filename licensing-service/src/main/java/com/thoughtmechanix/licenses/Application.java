@@ -12,6 +12,8 @@ import org.springframework.cloud.stream.messaging.Sink;
 import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Primary;
+import org.springframework.data.redis.connection.jedis.JedisConnectionFactory;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.integration.annotation.InboundChannelAdapter;
 import org.springframework.integration.annotation.Poller;
 import org.springframework.integration.core.MessageSource;
@@ -41,6 +43,22 @@ public class Application {
             template.setInterceptors(interceptors);
         }
 
+        return template;
+    }
+
+    //NEED TO USE A CONFIGURATION OBJECT HERE
+    @Bean
+    public JedisConnectionFactory jedisConnectionFactory() {
+        JedisConnectionFactory jedisConnFactory = new JedisConnectionFactory();
+        jedisConnFactory.setHostName("redis");
+        jedisConnFactory.setPort(6379);
+        return jedisConnFactory;
+    }
+
+    @Bean
+    public RedisTemplate<String, Object> redisTemplate() {
+        RedisTemplate<String, Object> template = new RedisTemplate<String, Object>();
+        template.setConnectionFactory(jedisConnectionFactory());
         return template;
     }
 

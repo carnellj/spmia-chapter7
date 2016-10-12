@@ -1,12 +1,11 @@
 package com.thoughtmechanix.licenses.clients;
 
 import com.thoughtmechanix.licenses.model.Organization;
+import com.thoughtmechanix.licenses.repository.OrganizationRedisRepository;
 import com.thoughtmechanix.licenses.utils.UserContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
@@ -17,15 +16,34 @@ public class OrganizationRestTemplateClient {
     @Autowired
     RestTemplate restTemplate;
 
+    @Autowired
+    OrganizationRedisRepository orgRedisRepo;
+
     private static final Logger logger = LoggerFactory.getLogger(OrganizationRestTemplateClient.class);
 
+
     public Organization getOrganization(String organizationId){
-        logger.debug(">>> In Licensing Service.getOrganization: {}", UserContext.getCorrelationId());
+        logger.debug("In Licensing Service.getOrganization: {}", UserContext.getCorrelationId());
+
+        Organization org = orgRedisRepo.findOrganization(organizationId);
+
+        if (org!=null){
+            logger.debug("I have successfully retrieved an organization {} from the redis cache: {}", organizationId, org);
+            return org;
+        }
+
+        logger.debug("Unable to locate organization from the redis cache: {}.", organizationId);
+
         ResponseEntity<Organization> restExchange =
                 restTemplate.exchange(
                         "http://zuulservice/api/organization/v1/organizations/{organizationId}",
                         HttpMethod.GET,
                         null, Organization.class, organizationId);
+
+        /*Save the record from cache*/
+        org = restExchange.getBody();
+        orgRedisRepo.saveOrganization(org);
+
         return restExchange.getBody();
     }
 }
