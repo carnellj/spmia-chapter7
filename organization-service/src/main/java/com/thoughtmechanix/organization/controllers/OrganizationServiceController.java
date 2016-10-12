@@ -1,13 +1,14 @@
 package com.thoughtmechanix.organization.controllers;
 
 
+import com.thoughtmechanix.organization.events.source.SimpleSourceBean;
 import com.thoughtmechanix.organization.model.Organization;
 import com.thoughtmechanix.organization.services.OrganizationService;
 import com.thoughtmechanix.organization.utils.UserContext;
-import org.fluentd.logger.FluentLogger;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.stream.messaging.Source;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.http.HttpStatus;
@@ -16,20 +17,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
-import javax.servlet.http.HttpServletRequest;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
 @RestController
 @RequestMapping(value="v1/organizations")
 public class OrganizationServiceController {
     @Autowired
     private OrganizationService orgService;
 
+    private Source source;
+
 
     private static final Logger logger = LoggerFactory.getLogger(OrganizationServiceController.class);
-    private static FluentLogger FLOG = FluentLogger.getLogger("tmx.organizationserver", "fluentd", 24224);
+
+
+    @Autowired
+    SimpleSourceBean simpleSourceBean;
 
 
     @RequestMapping(value="/{organizationId}",method = RequestMethod.GET)
@@ -37,7 +38,8 @@ public class OrganizationServiceController {
         UserContext.flog(String.format("Looking up data for org %s", organizationId));
 
         Organization org = orgService.getOrg(organizationId);
-        org.setContactName("OLD::" + org.getContactName());
+        org.setContactName(org.getContactName());
+        simpleSourceBean.publishOrgChange(organizationId);
         return org;
     }
 

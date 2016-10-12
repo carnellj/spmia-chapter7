@@ -27,81 +27,21 @@ import java.util.List;
 @EnableEurekaClient
 @EnableCircuitBreaker
 //@EnableBinding(Sink.class)
-@EnableBinding(Source.class)
 public class Application {
 
     @LoadBalanced
     @Bean
-    public RestTemplate getRestTemplate(){
+    public RestTemplate getRestTemplate() {
         RestTemplate template = new RestTemplate();
         List interceptors = template.getInterceptors();
-        if (interceptors==null){
+        if (interceptors == null) {
             template.setInterceptors(Collections.singletonList(new UserContextInterceptor()));
-        }
-        else{
+        } else {
             interceptors.add(new UserContextInterceptor());
             template.setInterceptors(interceptors);
         }
 
         return template;
-    }
-
-    @Bean
-    @InboundChannelAdapter(value = Source.OUTPUT, poller = @Poller(fixedDelay = "10000", maxMessagesPerPoll = "1"))
-    public MessageSource<TimeInfo> timerMessageSource() {
-        System.out.println("!!!!!!Sending Kafka message");
-        return () -> MessageBuilder.withPayload(new TimeInfo(new Date().getTime() + "", "Label")).build();
-    }
-
-
-
-    public static class TimeInfo{
-
-        private String time;
-        private String label;
-
-        public TimeInfo(String time, String label) {
-            super();
-            this.time = time;
-            this.label = label;
-        }
-
-        public String getTime() {
-            return time;
-        }
-
-        public String getLabel() {
-            return label;
-        }
-
-    }
-
-    public static class SinkTimeInfo{
-
-        private String time;
-        private String label;
-
-        public String getTime() {
-            return time;
-        }
-
-        public void setTime(String time) {
-            this.time = time;
-        }
-
-        public void setSinkLabel(String label) {
-            this.label = label;
-        }
-
-        public String getLabel() {
-            return label;
-        }
-
-        @Override
-        public String toString() {
-            return "SinkTimeInfo [time=" + time + ", label=" + label + "]";
-        }
-
     }
 
     public static void main(String[] args) {

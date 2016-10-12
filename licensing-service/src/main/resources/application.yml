@@ -1,3 +1,25 @@
+spring:
+  application:
+    name: licensingservice
+  profiles:
+    active:
+      default
+  cloud:
+    config:
+      enabled: true
+    stream:
+      bindings:
+        input:
+          destination: orgChangeTopic
+          content-type: application/json
+          group: orgChangeGroup
+          consumer:
+              resetOffsets: false
+          zkNodes: kafka
+        binder:
+          zkNodes: localhost
+          brokers: localhost
+
 eureka:
   instance:
     preferIpAddress: true
@@ -13,24 +35,4 @@ logging:
     com.netflix: WARN
     org.springframework.web: WARN
     com.thoughtmechanix: DEBUG
-
-spring:
-  cloud:
-    stream:
-      bindings:
-        output:
-          destination:  timerTopic
-          content-type: application/json
-        input:
-          destination: timerTopic
-          content-type: application/json
-          group: timerGroup
-          consumer:
-              resetOffsets: true
-          zkNodes: kafka
-      kafka:
-        binder:
-          zkNodes: localhost
-          brokers: localhost
-
 

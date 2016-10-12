@@ -21,8 +21,14 @@ echo "*******  Configuration Server has started"
 echo "********************************************************"
 echo "Waiting for the kafka server to start                 *"
 echo "********************************************************"
-while ! `nc -z kafkaserver 9092`; do sleep 3; done
+while ! `nc -z kafkaserver 9092`; do sleep 5; done
 echo "******* Kafka Server has started"
+
+echo "********************************************************"
+echo "Waiting for the zookeeper server to start                 *"
+echo "********************************************************"
+while ! `nc -z kafkaserver 2181`; do sleep 5; done
+echo "******* Zookeeper has started"
 
 echo "********************************************************"
 echo "Starting License Server with Configuration Service via Eureka :  $EUREKASERVER_URI:$SERVER_PORT"

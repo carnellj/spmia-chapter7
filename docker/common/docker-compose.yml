@@ -63,13 +63,17 @@ organizationservice:
       - "database:database"
       - "configserver:configserver"
       - "eurekaserver:eurekaserver"
-      - "es:es"
       - "fluentd:fluentd"
+      - "es:es"
+      - "zuulserver:zuulserver"
+      - "kafkaserver:kafkaserver"
     environment:
       PROFILE: "default"
       SERVER_PORT: "8085"
       CONFIGSERVER_URI: "http://configserver:8888"
       EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+      KAFKASERVER_URI: "kafkaserver"
+      ZKSERVER_URI: "kafkaserver"
 
 #orgservice-new:
 #    image: johncarnell/tmx-orgservice-new:chapter7
