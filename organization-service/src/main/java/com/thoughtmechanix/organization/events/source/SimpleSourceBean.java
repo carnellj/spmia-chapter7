@@ -1,6 +1,7 @@
 package com.thoughtmechanix.organization.events.source;
 
 import com.thoughtmechanix.organization.event.models.OrganizationChangeModel;
+import com.thoughtmechanix.organization.utils.UserContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ public class SimpleSourceBean {
     private Source source;
 
     private static final Logger logger = LoggerFactory.getLogger(SimpleSourceBean.class);
+
     @Autowired
     public SimpleSourceBean(Source source){
         this.source = source;
@@ -24,7 +26,8 @@ public class SimpleSourceBean {
         OrganizationChangeModel change =  new OrganizationChangeModel(
                 OrganizationChangeModel.class.getTypeName(),
                 action,
-                orgId);
+                orgId,
+                UserContext.getCorrelationId());
 
         source.output().send(MessageBuilder.withPayload(change).build());
     }

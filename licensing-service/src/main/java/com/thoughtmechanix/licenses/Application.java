@@ -1,6 +1,11 @@
 package com.thoughtmechanix.licenses;
 
+import com.thoughtmechanix.licenses.config.ServiceConfig;
+import com.thoughtmechanix.licenses.events.models.OrganizationChangeModel;
 import com.thoughtmechanix.licenses.utils.UserContextInterceptor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.client.circuitbreaker.EnableCircuitBreaker;
@@ -28,9 +33,13 @@ import java.util.List;
 @SpringBootApplication
 @EnableEurekaClient
 @EnableCircuitBreaker
-//@EnableBinding(Sink.class)
+@EnableBinding(Sink.class)
 public class Application {
 
+    @Autowired
+    private ServiceConfig serviceConfig;
+
+    private static final Logger logger = LoggerFactory.getLogger(Application.class);
     @LoadBalanced
     @Bean
     public RestTemplate getRestTemplate() {
@@ -50,8 +59,8 @@ public class Application {
     @Bean
     public JedisConnectionFactory jedisConnectionFactory() {
         JedisConnectionFactory jedisConnFactory = new JedisConnectionFactory();
-        jedisConnFactory.setHostName("redis");
-        jedisConnFactory.setPort(6379);
+        jedisConnFactory.setHostName( serviceConfig.getExampleProperty() );
+        jedisConnFactory.setPort( serviceConfig.getRedisPort() );
         return jedisConnFactory;
     }
 
@@ -60,6 +69,11 @@ public class Application {
         RedisTemplate<String, Object> template = new RedisTemplate<String, Object>();
         template.setConnectionFactory(jedisConnectionFactory());
         return template;
+    }
+
+    @StreamListener(Sink.INPUT)
+    public void loggerSink(OrganizationChangeModel orgChange) {
+        logger.debug("Received an event for organization id {}", orgChange.getOrganizationId());
     }
 
     public static void main(String[] args) {

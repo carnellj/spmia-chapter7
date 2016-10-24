@@ -21,13 +21,13 @@ echo "*******  Configuration Server has started"
 echo "********************************************************"
 echo "Waiting for the kafka server to start                 *"
 echo "********************************************************"
-while ! `nc -z kafkaserver 9092`; do sleep 5; done
+while ! `nc -z kafkaserver 9092`; do sleep 10; done
 echo "******* Kafka Server has started"
 
 echo "********************************************************"
 echo "Waiting for the zookeeper server to start                 *"
 echo "********************************************************"
-while ! `nc -z kafkaserver 2181`; do sleep 5; done
+while ! `nc -z kafkaserver 2181`; do sleep 10; done
 echo "******* Zookeeper has started"
 
 echo "********************************************************"

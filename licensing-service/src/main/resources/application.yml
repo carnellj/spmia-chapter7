@@ -12,10 +12,13 @@ spring:
         input:
           destination: orgChangeTopic
           content-type: application/json
-          group: orgChangeGroup
-          consumer:
-              resetOffsets: false
-          zkNodes: kafka
+          group: licensingGroup
+#        inboundOrgChanges:
+#          destination: orgChangeTopic
+#          content-type: application/json
+#          group: licensingGroup
+#          consumer:
+#            resetOffsets: false
         binder:
           zkNodes: localhost
           brokers: localhost
