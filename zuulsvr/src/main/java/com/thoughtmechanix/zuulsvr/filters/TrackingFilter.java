@@ -49,6 +49,9 @@ public class TrackingFilter extends ZuulFilter{
         System.out.println("!!!!***I AM IN THE run");
         dumpInfo();
 
+        RequestContext ctx = RequestContext.getCurrentContext();
+        //ctx.addZuulRequestHeader("Authorization", ctx.getRequest().getHeader("Authorization"));
+
         if (isCorrelationIdPresent()) {
             filterUtils.flog(String.format("tmx-correlation-id found in tracking filter: %s. ", filterUtils.getCorrelationId()));
         }
@@ -57,7 +60,7 @@ public class TrackingFilter extends ZuulFilter{
             filterUtils.flog(String.format("tmx-correlation-id generated in tracking filter: {}.", filterUtils.getCorrelationId()));
         }
 
-        RequestContext ctx = RequestContext.getCurrentContext();
+        //RequestContext ctx = RequestContext.getCurrentContext();
         filterUtils.flog(String.format("Processing incoming request for {}.",  ctx.getRequest().getRequestURI()));
         return null;
     }
