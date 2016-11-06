@@ -14,6 +14,7 @@ logging:
     com.netflix: WARN
     org.springframework.web: WARN
     com.thoughtmechanix: DEBUG
+    org.springframework.security:   DEBUG
 
 eureka:
   instance:
@@ -23,3 +24,12 @@ eureka:
     fetchRegistry: true
     serviceUrl:
         defaultZone: http://localhost:8761/eureka/
+
+
+
+server:
+  contextPath:   /auth
+
+security:
+  user:
+      password:  password

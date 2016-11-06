@@ -1,8 +1,7 @@
-FROM openjdk:latest
-RUN  apt-get update && apt-get install -y netcat
+FROM openjdk:8-jdk-alpine
+RUN  apk update && apk upgrade && apk add netcat-openbsd
 RUN mkdir -p /usr/local/configserver
-ADD configurationserver-0.0.1-SNAPSHOT.jar /usr/local/configserver/
-EXPOSE 8888 8889 9000 9001
+ADD @project.build.finalName@.jar /usr/local/configserver/
 ADD run.sh run.sh
 RUN chmod +x run.sh
 CMD ./run.sh

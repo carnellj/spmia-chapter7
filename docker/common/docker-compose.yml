@@ -46,15 +46,13 @@ licensingservice:
       - "eurekaserver:eurekaserver"
       - "fluentd:fluentd"
       - "zuulserver:zuulserver"
-      - "kafkaserver:kafkaserver"
-      - "redis:redis"
+      - "authenticationservice:authenticationservice"
     environment:
       PROFILE: "default"
       SERVER_PORT: "8080"
       CONFIGSERVER_URI: "http://configserver:8888"
       EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
-      KAFKASERVER_URI: "kafkaserver"
-      ZKSERVER_URI: "kafkaserver"
+      AUTHSERVER_URI:   "http://authenticationservice:8901/auth/user"
 
 organizationservice:
     image: johncarnell/tmx-organization-service:chapter7
@@ -66,15 +64,14 @@ organizationservice:
       - "eurekaserver:eurekaserver"
       - "fluentd:fluentd"
       - "es:es"
-      - "zuulserver:zuulserver"
-      - "kafkaserver:kafkaserver"
+      - "authenticationservice:authenticationservice"
     environment:
       PROFILE: "default"
       SERVER_PORT: "8085"
       CONFIGSERVER_URI: "http://configserver:8888"
       EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
-      KAFKASERVER_URI: "kafkaserver"
-      ZKSERVER_URI: "kafkaserver"
+      AUTHSERVER_URI:   "http://authenticationservice:8901/auth/user"
+
 
 #orgservice-new:
 #    image: johncarnell/tmx-orgservice-new:chapter7
@@ -92,21 +89,21 @@ organizationservice:
 #      CONFIGSERVER_URI: "http://configserver:8888"
 #      EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
 
-#authenticationservice:
-#    image: johncarnell/tmx-authentication-service:chapter7
-#    ports:
-#      - "8901:8901"
-#    links:
-#      - "database:database"
-#      - "configserver:configserver"
-#      - "eurekaserver:eurekaserver"
-#      - "zuulserver:zuulserver"
-#      - "fluentd:fluentd"
-#    environment:
-#      PROFILE: "default"
-#      SERVER_PORT: "8901"
-#      CONFIGSERVER_URI: "http://configserver:8888"
-#      EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+authenticationservice:
+    image: johncarnell/tmx-authentication-service:chapter7
+    ports:
+      - "8901:8901"
+    links:
+      - "database:database"
+      - "configserver:configserver"
+      - "eurekaserver:eurekaserver"
+      - "zuulserver:zuulserver"
+      - "fluentd:fluentd"
+    environment:
+      PROFILE: "default"
+      SERVER_PORT: "8901"
+      CONFIGSERVER_URI: "http://configserver:8888"
+      EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
 
 #specialroutes-service:
 #    image: johncarnell/tmx-specialroutes-service:chapter7
@@ -143,16 +140,5 @@ fluentd:
       - 9980:9980
     links:
       - es:es
-
-redis:
-    image: redis:alpine
-    ports:
-      - 6379:6379
-
-kafkaserver:
-    image: spotify/kafka
-    ports:
-      - 2181:2181
-      - 9092:9092
 
 

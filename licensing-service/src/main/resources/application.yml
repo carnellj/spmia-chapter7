@@ -4,23 +4,11 @@ spring:
   profiles:
     active:
       default
-  cloud:
-    config:
-      enabled: true
-    stream:
-      bindings:
-        inboundOrgChanges:
-          destination: orgChangeTopic
-          content-type: application/json
-          group: licensingGroup
-        binder:
-          zkNodes: localhost
-          brokers: localhost
 
-#        input:
-#          destination: orgChangeTopic
-#          content-type: application/json
-#          group: licensingGroup
+security:
+  oauth2:
+   resource:
+      userInfoUri: http://localhost:8901/auth/user
 
 eureka:
   instance:
@@ -37,4 +25,5 @@ logging:
     com.netflix: WARN
     org.springframework.web: WARN
     com.thoughtmechanix: DEBUG
+
 

@@ -7,15 +7,11 @@ spring:
   cloud:
     config:
       enabled: true
-    stream:
-      bindings:
-        output:
-            destination:  orgChangeTopic
-            content-type: application/json
-        kafka:
-          binder:
-            zkNodes: localhost
-            brokers: localhost
+
+security:
+  oauth2:
+   resource:
+      userInfoUri: http://localhost:8901/auth/user
 
 #Setting the logging levels for the service
 logging:
@@ -34,4 +30,4 @@ eureka:
     serviceUrl:
         defaultZone: http://localhost:8761/eureka/
 
-        
+

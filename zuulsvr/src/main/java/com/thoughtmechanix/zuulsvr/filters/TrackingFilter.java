@@ -35,11 +35,19 @@ public class TrackingFilter extends ZuulFilter{
       return false;
     }
 
+    private void dumpInfo(){
+        RequestContext ctx = RequestContext.getCurrentContext();
+        System.out.println("!!!!!***SERVICE ID        ---->  " + ctx.getRequest().getRequestURI());
+        System.out.println("!!!!!***AUTH              ---->  " + ctx.getRequest().getHeader("Authorization"));
+    }
+
     private String generateCorrelationId(){
         return java.util.UUID.randomUUID().toString();
     }
 
     public Object run() {
+        System.out.println("!!!!***I AM IN THE run");
+        dumpInfo();
 
         if (isCorrelationIdPresent()) {
             filterUtils.flog(String.format("tmx-correlation-id found in tracking filter: %s. ", filterUtils.getCorrelationId()));
