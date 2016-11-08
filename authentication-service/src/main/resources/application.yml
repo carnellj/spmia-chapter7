@@ -14,7 +14,6 @@ logging:
     com.netflix: WARN
     org.springframework.web: WARN
     com.thoughtmechanix: DEBUG
-    org.springframework.security:   DEBUG
 
 eureka:
   instance:
@@ -30,6 +29,7 @@ eureka:
 server:
   contextPath:   /auth
 
-security:
-  user:
-      password:  password
+#security:
+#  user:
+#      name:      c038597
+#      password:  password
