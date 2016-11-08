@@ -32,7 +32,7 @@ public class LicenseService {
         License license = licenseRepository.findByOrganizationIdAndLicenseId(organizationId, licenseId);
 
         Organization org = getOrganization(organizationId);
-        //return license;
+       // return license;
         return license
                 .withOrganizationName( org.getName())
                 .withContactName( org.getContactName())
