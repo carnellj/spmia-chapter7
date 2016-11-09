@@ -28,8 +28,3 @@ eureka:
 
 server:
   contextPath:   /auth
-
-#security:
-#  user:
-#      name:      c038597
-#      password:  password
