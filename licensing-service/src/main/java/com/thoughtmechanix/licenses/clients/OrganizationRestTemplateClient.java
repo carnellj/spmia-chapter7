@@ -5,6 +5,7 @@ import com.thoughtmechanix.licenses.utils.UserContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.oauth2.client.OAuth2RestOperations;
@@ -15,16 +16,19 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class OrganizationRestTemplateClient {
     @Autowired
-    //RestTemplate restTemplate;
-    OAuth2RestOperations restTemplate;
+    RestTemplate restTemplate;
+
+    //OAuth2RestOperations restTemplate;
+   // OAuth2RestTemplate restTemplate;
 
     private static final Logger logger = LoggerFactory.getLogger(OrganizationRestTemplateClient.class);
 
 
     public Organization getOrganization(String organizationId){
         logger.debug("In Licensing Service.getOrganization: {}", UserContext.getCorrelationId());
-
-
+        logger.debug("I AM HERE");
+       // logger.debug("!!!!TOKEN WE ARE GOING TO SEND --->  " + restTemplate.getAccessToken().getValue());
+        //restTemplate.
         ResponseEntity<Organization> restExchange =
                 restTemplate.exchange(
                         "http://zuulserver:5555/api/organization/v1/organizations/{organizationId}",
