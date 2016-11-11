@@ -3,8 +3,12 @@ package com.thoughtmechanix.authentication;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.SpringApplication;
+import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceBuilder;
+import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -26,6 +30,8 @@ import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenCo
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import javax.sql.DataSource;
 import java.security.Principal;
 import java.util.HashMap;
 import java.util.Map;
@@ -34,7 +40,18 @@ import java.util.Map;
 @RestController
 @EnableResourceServer
 public class Application {
-
+    @Bean
+    @Primary
+    public DataSource dataSource() {
+        //return DataSourceBuilder.create().build();
+        return DataSourceBuilder
+                .create()
+                .username("postgres")
+                .password("p0stgr@s")
+                .url("jdbc:postgresql://database:5432/eagle_eye_local")
+                .driverClassName("org.postgresql.Driver")
+                .build();
+    }
 
     @RequestMapping(value = { "/user" }, produces = "application/json")
     public Map<String, Object> user(OAuth2Authentication user) {
@@ -50,59 +67,5 @@ public class Application {
         SpringApplication.run(Application.class, args);
     }
 
-    @Configuration
-    @EnableAuthorizationServer
-    @Order(6)
-    protected static class OAuth2Config extends AuthorizationServerConfigurerAdapter {
 
-       @Autowired
-       @Qualifier("authenticationManagerBean")
-        private AuthenticationManager authenticationManager;
-
-        @Autowired
-        private UserDetailsService userDetailsService;
-
-
-        @Override
-        public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
-            endpoints.tokenStore(tokenStore());                             //JWT
-            endpoints.accessTokenConverter(jwtAccessTokenConverter());      //JWT
-            endpoints.authenticationManager(authenticationManager);
-            endpoints.userDetailsService(userDetailsService);
-        }
-
-        //JWT
-        @Bean
-        public TokenStore tokenStore() {
-            return new JwtTokenStore(jwtAccessTokenConverter());
-        }
-
-        //JWT
-        @Bean
-        public JwtAccessTokenConverter jwtAccessTokenConverter() {
-            JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-            converter.setSigningKey("345345fsdfsf5345");
-            return converter;
-        }
-
-        //JWT
-        @Bean
-        @Primary
-        public DefaultTokenServices tokenServices() {
-            DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
-            defaultTokenServices.setTokenStore(tokenStore());
-            defaultTokenServices.setSupportRefreshToken(true);
-            return defaultTokenServices;
-        }
-
-
-        @Override
-        public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
-            clients.inMemory()
-                    .withClient("acme")
-                    .secret("acmesecret")
-                    .authorizedGrantTypes("authorization_code", "refresh_token", "implicit", "password", "client_credentials")
-                    .scopes("webshop");
-        }
-    }
 }
