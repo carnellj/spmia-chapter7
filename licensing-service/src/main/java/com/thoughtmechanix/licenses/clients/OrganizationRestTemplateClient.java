@@ -26,7 +26,7 @@ public class OrganizationRestTemplateClient {
 
     public Organization getOrganization(String organizationId){
         logger.debug("In Licensing Service.getOrganization: {}", UserContext.getCorrelationId());
-        logger.debug("I AM HERE");
+
        // logger.debug("!!!!TOKEN WE ARE GOING TO SEND --->  " + restTemplate.getAccessToken().getValue());
         //restTemplate.
         ResponseEntity<Organization> restExchange =

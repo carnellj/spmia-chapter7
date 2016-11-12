@@ -15,6 +15,14 @@ public class ServiceConfig{
   @Value("${redis.port}")
   private String redisPort="";
 
+  @Value("${signing.key}")
+  private String jwtSigningKey="";
+
+
+  public String getJwtSigningKey() {
+    return jwtSigningKey;
+  }
+
   public String getExampleProperty(){
     return exampleProperty;
   }

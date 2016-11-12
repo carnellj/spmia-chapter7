@@ -17,7 +17,7 @@ CREATE TABLE user_roles (
 CREATE TABLE user_orgs (
   organization_id   VARCHAR(100)  NOT NULL,
   user_name         VARCHAR(100)   NOT NULL,
-  PRIMARY KEY (organization_id,user_name));
+  PRIMARY KEY (user_name));
 
 INSERT INTO users(user_name,password,enabled) VALUES ('john.carnell','$2a$04$NX3QTkBJB00upxKeaKqFBeoIVc9JHvwVnj1lItxNphRj34wNx5wlu', true);
 INSERT INTO users(user_name,password,enabled) VALUES ('william.woodward','$2a$04$lM2hIsZVNYrQLi8mhvnTA.pheZtmzeivz6fyxCr9GZ6YSfP6YibCW', true);

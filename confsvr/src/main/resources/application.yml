@@ -20,7 +20,7 @@ spring:
       server:
         git:
           uri: https://github.com/carnellj/config-repo/
-          searchPaths: licensingservice,organizationservice,specialroutesservice,zuulservice
+          searchPaths: licensingservice,organizationservice,specialroutesservice,zuulservice,authenticationservice
           username: native-cloud-apps
           password: 0ffended
 

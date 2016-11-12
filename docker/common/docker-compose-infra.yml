@@ -1,0 +1,50 @@
+version: '2'
+services:
+  eurekaserver:
+     image:   johncarnell/tmx-eurekasvr:chapter7
+     ports:
+         - "8761:8761"
+  configserver:
+      image: johncarnell/tmx-confsvr:chapter7
+      ports:
+         - "8888:8888"
+      environment:
+         EUREKASERVER_PORT: 8761
+         EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+  zuulserver:
+      image: johncarnell/tmx-zuulsvr:chapter7
+      ports:
+        - "5555:5555"
+      environment:
+        PROFILE: "default"
+        SERVER_PORT: "5555"
+        CONFIGSERVER_PORT: 8888
+        EUREKASERVER_PORT: 8761
+        CONFIGSERVER_URI: "http://configserver:8888"
+        EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+  database:
+      image: postgres
+      ports:
+        - "5432:5432"
+      environment:
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=p0stgr@s
+        - POSTGRES_DB=eagle_eye_local
+  es:
+    image: elasticsearch:2
+    ports:
+      - 9200:9200
+      - 9300:9300
+    networks:
+      default:
+        aliases:
+          - elasticsearch
+  kibana:
+    image: kibana
+    ports:
+      - 5601:5601
+  fluentd:
+    image: johncarnell/tmx-fluentd:chapter7
+    ports:
+      - 24224:24224
+      - 9980:9980

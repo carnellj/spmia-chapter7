@@ -2,8 +2,13 @@ package com.thoughtmechanix.zuulsvr.filters;
 
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
+import com.thoughtmechanix.zuulsvr.config.ServiceConfig;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jwts;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+
+import javax.xml.bind.DatatypeConverter;
 
 @Component
 public class TrackingFilter extends ZuulFilter{
@@ -11,7 +16,10 @@ public class TrackingFilter extends ZuulFilter{
     private static final boolean  SHOULD_FILTER=true;
 
     @Autowired
-    FilterUtils filterUtils;
+    private FilterUtils filterUtils;
+
+    @Autowired
+    private ServiceConfig serviceConfig;
 
     @Override
     public String filterType() {
@@ -35,22 +43,32 @@ public class TrackingFilter extends ZuulFilter{
       return false;
     }
 
-    private void dumpInfo(){
-        RequestContext ctx = RequestContext.getCurrentContext();
-        System.out.println("!!!!!***SERVICE ID        ---->  " + ctx.getRequest().getRequestURI());
-        System.out.println("!!!!!***AUTH              ---->  " + ctx.getRequest().getHeader("Authorization"));
-    }
-
     private String generateCorrelationId(){
         return java.util.UUID.randomUUID().toString();
     }
 
+    private String getOrganizationId(){
+
+        String result="";
+        if (filterUtils.getAuthToken()!=null){
+
+            String authToken = filterUtils.getAuthToken().replace("Bearer ","");
+            try {
+                Claims claims = Jwts.parser()
+                        .setSigningKey(serviceConfig.getJwtSigningKey().getBytes("UTF-8"))
+                        .parseClaimsJws(authToken).getBody();
+                result = (String) claims.get("organizationId");
+            }
+            catch (Exception e){
+                e.printStackTrace();
+            }
+        }
+        return result;
+    }
+
     public Object run() {
-        System.out.println("!!!!***I AM IN THE run");
-        dumpInfo();
 
         RequestContext ctx = RequestContext.getCurrentContext();
-        //ctx.addZuulRequestHeader("Authorization", ctx.getRequest().getHeader("Authorization"));
 
         if (isCorrelationIdPresent()) {
             filterUtils.flog(String.format("tmx-correlation-id found in tracking filter: %s. ", filterUtils.getCorrelationId()));
@@ -60,7 +78,8 @@ public class TrackingFilter extends ZuulFilter{
             filterUtils.flog(String.format("tmx-correlation-id generated in tracking filter: {}.", filterUtils.getCorrelationId()));
         }
 
-        //RequestContext ctx = RequestContext.getCurrentContext();
+        System.out.println("The organization id from the token is : " + getOrganizationId());
+        filterUtils.setOrgId(getOrganizationId());
         filterUtils.flog(String.format("Processing incoming request for {}.",  ctx.getRequest().getRequestURI()));
         return null;
     }

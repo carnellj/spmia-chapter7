@@ -1,4 +1,4 @@
-package com.thoughtmechanix.licenses.config;
+package com.thoughtmechanix.licenses.security;
 
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,8 +16,6 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 @Configuration
 public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter{
-
-
     @Override
     public void configure(HttpSecurity http) throws Exception {
         http.csrf().disable();
@@ -28,39 +26,5 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                 .and()
                 .authorizeRequests()
                 .anyRequest().authenticated();
-
     }
-
-    //JWT
-    @Override
-    public void configure(ResourceServerSecurityConfigurer config) {
-        //config.tokenStore(tokenStore());
-        config.tokenServices(tokenServices());
-    }
-
-    //JWT
-    @Bean
-    public TokenStore tokenStore() {
-        return new JwtTokenStore(jwtAccessTokenConverter());
-    }
-
-    //JWT
-    @Bean
-    public JwtAccessTokenConverter jwtAccessTokenConverter() {
-        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        converter.setSigningKey("345345fsdfsf5345");
-        return converter;
-    }
-
-    //JWT
-    @Bean
-    @Primary
-    public DefaultTokenServices tokenServices() {
-        DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
-        defaultTokenServices.setTokenStore(tokenStore());
-        return defaultTokenServices;
-    }
-
-
-
 }

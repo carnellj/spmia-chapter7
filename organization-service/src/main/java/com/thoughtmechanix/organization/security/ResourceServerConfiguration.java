@@ -1,4 +1,4 @@
-package com.thoughtmechanix.organization.config;
+package com.thoughtmechanix.organization.security;
 
 
 import org.springframework.context.annotation.Bean;
@@ -28,39 +28,5 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
                 .authorizeRequests()
                 .antMatchers("/v1/organizations/**").hasRole("ADMIN")
                 .anyRequest().authenticated();
-
     }
-
-    //JWT
-    @Override
-    public void configure(ResourceServerSecurityConfigurer config) {
-        //config.tokenStore(tokenStore());
-        config.tokenServices(tokenServices());
-    }
-
-    //JWT
-    @Bean
-    public TokenStore tokenStore() {
-        return new JwtTokenStore(jwtAccessTokenConverter());
-    }
-
-    //JWT
-    @Bean
-    public JwtAccessTokenConverter jwtAccessTokenConverter() {
-        JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        converter.setSigningKey("345345fsdfsf5345");
-        return converter;
-    }
-
-    //JWT
-    @Bean
-    @Primary
-    public DefaultTokenServices tokenServices() {
-        DefaultTokenServices defaultTokenServices = new DefaultTokenServices();
-        defaultTokenServices.setTokenStore(tokenStore());
-        return defaultTokenServices;
-    }
-
-
-
 }

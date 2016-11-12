@@ -7,12 +7,12 @@ import javax.persistence.Table;
 import java.io.Serializable;
 
 @Entity
-@Table(name = "org_users")
-public class OrganizationUser implements Serializable {
-    @Id
+@Table(name = "user_orgs")
+public class UserOrganization implements Serializable {
     @Column(name = "organization_id", nullable = false)
     String organizationId;
 
+    @Id
     @Column(name = "user_name", nullable = false)
     String userName;
 
