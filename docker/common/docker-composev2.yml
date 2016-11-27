@@ -1,0 +1,93 @@
+version: '2'
+services:
+  eurekaserver:
+     image:   johncarnell/tmx-eurekasvr:chapter7
+     ports:
+         - "8761:8761"
+  configserver:
+      image: johncarnell/tmx-confsvr:chapter7
+      ports:
+         - "8888:8888"
+      environment:
+         EUREKASERVER_PORT: 8761
+         EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+  zuulserver:
+      image: johncarnell/tmx-zuulsvr:chapter7
+      ports:
+        - "5555:5555"
+      environment:
+        PROFILE: "default"
+        SERVER_PORT: "5555"
+        CONFIGSERVER_PORT: 8888
+        EUREKASERVER_PORT: 8761
+        CONFIGSERVER_URI: "http://configserver:8888"
+        EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+  database:
+      image: postgres
+      ports:
+        - "5432:5432"
+      environment:
+        - POSTGRES_USER=postgres
+        - POSTGRES_PASSWORD=p0stgr@s
+        - POSTGRES_DB=eagle_eye_local
+  es:
+    image: elasticsearch:2
+    ports:
+      - 9200:9200
+      - 9300:9300
+    networks:
+      default:
+        aliases:
+          - elasticsearch
+  kibana:
+    image: kibana
+    ports:
+      - 5601:5601
+  fluentd:
+    image: johncarnell/tmx-fluentd:chapter7
+    ports:
+      - 24224:24224
+      - 9980:9980
+  licensingservice:
+      image: johncarnell/tmx-licensing-service:chapter7
+      ports:
+        - "8080:8080"
+      environment:
+        PROFILE: "default"
+        SERVER_PORT: "8080"
+        ES_PORT:           9200
+        DATABASE_PORT:     5432
+        CONFIGSERVER_PORT: 8888
+        EUREKASERVER_PORT: 8761
+        AUTHSERVER_PORT:   8091
+        CONFIGSERVER_URI: "http://configserver:8888"
+        EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+        AUTHSERVER_URI:   "http://authenticationservice:8901/auth/user"
+  organizationservice:
+      image: johncarnell/tmx-organization-service:chapter7
+      ports:
+        - "8085:8085"
+      environment:
+        PROFILE: "default"
+        SERVER_PORT: "8085"
+        ES_PORT:           9200
+        DATABASE_PORT:     5432
+        CONFIGSERVER_PORT: 8888
+        EUREKASERVER_PORT: 8761
+        AUTHSERVER_PORT:   8091
+        CONFIGSERVER_URI: "http://configserver:8888"
+        EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
+        AUTHSERVER_URI:   "http://authenticationservice:8901/auth/user"
+  authenticationservice:
+      image: johncarnell/tmx-authentication-service:chapter7
+      ports:
+        - "8901:8901"
+      environment:
+        PROFILE: "default"
+        SERVER_PORT: "8901"
+        ES_PORT:           9200
+        DATABASE_PORT:     5432
+        CONFIGSERVER_PORT: 8888
+        EUREKASERVER_PORT: 8761
+        CONFIGSERVER_URI: "http://configserver:8888"
+        EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"

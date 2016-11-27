@@ -37,3 +37,4 @@ java -Djava.security.egd=file:/dev/./urandom -Dserver.port=$SERVER_PORT   \
      -Dspring.profiles.active=$PROFILE                                   \
      -Dsecurity.oauth2.resource.userInfoUri=$AUTHSERVER_URI               \
      -jar /usr/local/organizationservice/@project.build.finalName@.jar
+
