@@ -31,9 +31,6 @@ public class JDBCWebSecurityConfigurer extends WebSecurityConfigurerAdapter{
     }
 
 
-
-
-
    // Using a BCRYPT Encryption Algorithm. The password fors the users are password1 and password2 respectively
    // The paswords were generated online with https://www.dailycred.com/article/bcrypt-calculator
     @Bean

@@ -16,10 +16,7 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class OrganizationRestTemplateClient {
     @Autowired
-    RestTemplate restTemplate;
-
-    //OAuth2RestOperations restTemplate;
-   // OAuth2RestTemplate restTemplate;
+    OAuth2RestTemplate restTemplate;
 
     private static final Logger logger = LoggerFactory.getLogger(OrganizationRestTemplateClient.class);
 
@@ -27,8 +24,6 @@ public class OrganizationRestTemplateClient {
     public Organization getOrganization(String organizationId){
         logger.debug("In Licensing Service.getOrganization: {}", UserContext.getCorrelationId());
 
-       // logger.debug("!!!!TOKEN WE ARE GOING TO SEND --->  " + restTemplate.getAccessToken().getValue());
-        //restTemplate.
         ResponseEntity<Organization> restExchange =
                 restTemplate.exchange(
                         "http://zuulserver:5555/api/organization/v1/organizations/{organizationId}",

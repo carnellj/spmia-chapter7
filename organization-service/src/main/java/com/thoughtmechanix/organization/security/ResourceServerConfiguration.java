@@ -11,19 +11,6 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.R
 public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter {
 
 
-//    @Override
-//    public void configure_example(HttpSecurity http) throws Exception {
-////       http.csrf().disable();
-////       http.httpBasic().disable();
-//
-//        http
-////                //.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)  //JWT
-////               // .and()
-//                .authorizeRequests()
-////               // .antMatchers("/v1/organizations/**").hasRole("ADMIN")
-//                .anyRequest().authenticated();
-//    }
-
     @Override
     public void configure(HttpSecurity http) throws Exception{
         http
