@@ -20,7 +20,6 @@ public class OrganizationRestTemplateClient {
 
     private static final Logger logger = LoggerFactory.getLogger(OrganizationRestTemplateClient.class);
 
-
     public Organization getOrganization(String organizationId){
         logger.debug("In Licensing Service.getOrganization: {}", UserContext.getCorrelationId());
 
@@ -30,7 +29,6 @@ public class OrganizationRestTemplateClient {
                         HttpMethod.GET,
                         null, Organization.class, organizationId);
 
-        /*Save the record from cache*/
         return restExchange.getBody();
     }
 }
