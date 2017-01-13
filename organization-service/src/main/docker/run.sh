@@ -25,5 +25,6 @@ java -Djava.security.egd=file:/dev/./urandom -Dserver.port=$SERVER_PORT   \
      -Deureka.client.serviceUrl.defaultZone=$EUREKASERVER_URI             \
      -Dspring.cloud.config.uri=$CONFIGSERVER_URI                          \
      -Dspring.profiles.active=$PROFILE                                   \
-     -Dsecurity.oauth2.resource.userInfoUri=$AUTHSERVER_URI               \
      -jar /usr/local/organizationservice/@project.build.finalName@.jar
+
+ #   -Dsecurity.oauth2.resource.userInfoUri=$AUTHSERVER_URI               \

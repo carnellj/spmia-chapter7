@@ -16,7 +16,8 @@ import org.springframework.web.client.RestTemplate;
 @Component
 public class OrganizationRestTemplateClient {
     @Autowired
-    OAuth2RestTemplate restTemplate;
+    //OAuth2RestTemplate restTemplate;
+    RestTemplate restTemplate;
 
     private static final Logger logger = LoggerFactory.getLogger(OrganizationRestTemplateClient.class);
 

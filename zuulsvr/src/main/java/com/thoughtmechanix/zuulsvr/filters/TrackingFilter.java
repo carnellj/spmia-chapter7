@@ -78,9 +78,9 @@ public class TrackingFilter extends ZuulFilter{
             filterUtils.flog(String.format("tmx-correlation-id generated in tracking filter: {}.", filterUtils.getCorrelationId()));
         }
 
-//        System.out.println("The organization id from the token is : " + getOrganizationId());
-//        filterUtils.setOrgId(getOrganizationId());
-//        filterUtils.flog(String.format("Processing incoming request for {}.",  ctx.getRequest().getRequestURI()));
+        System.out.println("The organization id from the token is : " + getOrganizationId());
+        filterUtils.setOrgId(getOrganizationId());
+        filterUtils.flog(String.format("Processing incoming request for {}.",  ctx.getRequest().getRequestURI()));
         return null;
     }
 }

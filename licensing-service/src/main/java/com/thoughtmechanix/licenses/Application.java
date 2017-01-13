@@ -30,20 +30,20 @@ public class Application {
 
     private static final Logger logger = LoggerFactory.getLogger(Application.class);
 
-//    @Primary
-//    @Bean
-//    public RestTemplate getCustomRestTemplate() {
-//        RestTemplate template = new RestTemplate();
-//        List interceptors = template.getInterceptors();
-//        if (interceptors == null) {
-//            template.setInterceptors(Collections.singletonList(new UserContextInterceptor()));
-//        } else {
-//            interceptors.add(new UserContextInterceptor());
-//            template.setInterceptors(interceptors);
-//        }
-//
-//        return template;
-//    }
+    @Primary
+    @Bean
+    public RestTemplate getCustomRestTemplate() {
+        RestTemplate template = new RestTemplate();
+        List interceptors = template.getInterceptors();
+        if (interceptors == null) {
+            template.setInterceptors(Collections.singletonList(new UserContextInterceptor()));
+        } else {
+            interceptors.add(new UserContextInterceptor());
+            template.setInterceptors(interceptors);
+        }
+
+        return template;
+    }
 
 
     public static void main(String[] args) {
