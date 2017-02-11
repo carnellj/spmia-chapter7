@@ -20,6 +20,8 @@ import java.util.List;
 public class AuthenticationFilter extends ZuulFilter {
     private static final int FILTER_ORDER =  2;
     private static final boolean  SHOULD_FILTER=false;
+    private static final Logger logger = LoggerFactory.getLogger(AuthenticationFilter.class);
+
 
     @Autowired
     FilterUtils filterUtils;
@@ -81,12 +83,12 @@ public class AuthenticationFilter extends ZuulFilter {
         }
 
         if (isAuthTokenPresent()){
-           filterUtils.flog("Authentication token is present.");
+           logger.debug("Authentication token is present.");
         }else{
-            filterUtils.flog("Authentication token is not present.");
+           logger.debug("Authentication token is not present.");
 
-            ctx.setResponseStatusCode(HttpStatus.UNAUTHORIZED.value());
-            ctx.setSendZuulResponse(false);
+           ctx.setResponseStatusCode(HttpStatus.UNAUTHORIZED.value());
+           ctx.setSendZuulResponse(false);
         }
 
         UserInfo userInfo = isAuthTokenValid();
@@ -94,15 +96,14 @@ public class AuthenticationFilter extends ZuulFilter {
             filterUtils.setUserId(userInfo.getUserId());
             filterUtils.setOrgId(userInfo.getOrganizationId());
 
-            filterUtils.flog("Authentication token is valid.");
+            logger.debug("Authentication token is valid.");
             return null;
         }
 
-        filterUtils.flog("Authentication token is not valid.");
+        logger.debug("Authentication token is not valid.");
         ctx.setResponseStatusCode(HttpStatus.UNAUTHORIZED.value());
         ctx.setSendZuulResponse(false);
 
         return null;
-
     }
 }

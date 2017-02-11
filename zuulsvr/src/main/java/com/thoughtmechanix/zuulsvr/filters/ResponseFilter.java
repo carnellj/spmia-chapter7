@@ -3,6 +3,8 @@ package com.thoughtmechanix.zuulsvr.filters;
 
 import com.netflix.zuul.ZuulFilter;
 import com.netflix.zuul.context.RequestContext;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -10,6 +12,7 @@ import org.springframework.stereotype.Component;
 public class ResponseFilter extends ZuulFilter{
     private static final int  FILTER_ORDER=1;
     private static final boolean  SHOULD_FILTER=true;
+    private static final Logger logger = LoggerFactory.getLogger(ResponseFilter.class);
 
     @Autowired
     FilterUtils filterUtils;
@@ -33,10 +36,10 @@ public class ResponseFilter extends ZuulFilter{
     public Object run() {
         RequestContext ctx = RequestContext.getCurrentContext();
 
-        filterUtils.flog("Adding the correlation id to the outbound headers.");
+        logger.debug("Adding the correlation id to the outbound headers.");
         ctx.getResponse().addHeader(FilterUtils.CORRELATION_ID, filterUtils.getCorrelationId());
 
-        filterUtils.flog(String.format("Completing outgoing request for {}.", ctx.getRequest().getRequestURI()));
+        logger.debug("Completing outgoing request for {}.", ctx.getRequest().getRequestURI());
 
         return null;
     }

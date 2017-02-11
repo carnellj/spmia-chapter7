@@ -27,7 +27,6 @@ public class Application {
 
     @Autowired
     private ServiceConfig serviceConfig;
-
     private static final Logger logger = LoggerFactory.getLogger(Application.class);
 
     @Primary

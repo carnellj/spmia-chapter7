@@ -16,6 +16,7 @@ import java.io.IOException;
 
 @Component
 public class UserContextFilter implements Filter {
+    private static final Logger logger = LoggerFactory.getLogger(UserContextFilter.class);
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
 
@@ -26,7 +27,7 @@ public class UserContextFilter implements Filter {
             throws IOException, ServletException {
 
 
-         UserContext.flog("Entering the UserContextFilter for the organization service");
+        logger.debug("Entering the UserContextFilter for the organization service");
         HttpServletRequest httpServletRequest = (HttpServletRequest) servletRequest;
         System.out.println("**** I am entering the organization service id with auth token: " + httpServletRequest.getHeader("Authorization"));
 
@@ -41,7 +42,7 @@ public class UserContextFilter implements Filter {
         UserContext.setAuthToken(authToken);
         UserContext.setOrgId(orgId);
 
-        UserContext.flog("Exiting the UserContextFilter");
+        logger.debug("Exiting the UserContextFilter");
         filterChain.doFilter(httpServletRequest, servletResponse);
     }
 

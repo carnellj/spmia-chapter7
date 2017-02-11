@@ -18,6 +18,7 @@ spring:
       discovery:
         enabled: true
       server:
+        encrypt.enabled: false
         git:
           uri: https://github.com/carnellj/config-repo/
           searchPaths: licensingservice,organizationservice,specialroutesservice,zuulservice,authenticationservice

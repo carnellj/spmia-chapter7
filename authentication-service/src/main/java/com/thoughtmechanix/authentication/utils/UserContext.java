@@ -1,4 +1,4 @@
-package com.thoughtmechanix.specialroutes.utils;
+package com.thoughtmechanix.authentication.utils;
 
 import org.springframework.stereotype.Component;
 
