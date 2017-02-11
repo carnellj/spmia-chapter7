@@ -37,10 +37,10 @@ public class UserContextFilter implements Filter {
         String orgId = httpServletRequest.getHeader(UserContext.ORG_ID);
 
 
-        UserContext.setCorrelationId(correlationId);
-        UserContext.setUserId(userId);
-        UserContext.setAuthToken(authToken);
-        UserContext.setOrgId(orgId);
+        UserContextHolder.getContext().setCorrelationId(correlationId);
+        UserContextHolder.getContext().setUserId(userId);
+        UserContextHolder.getContext().setAuthToken(authToken);
+        UserContextHolder.getContext().setOrgId(orgId);
 
         logger.debug("Exiting the UserContextFilter");
         filterChain.doFilter(httpServletRequest, servletResponse);
