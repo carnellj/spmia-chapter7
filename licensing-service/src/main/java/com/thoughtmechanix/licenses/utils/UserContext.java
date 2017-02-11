@@ -1,6 +1,5 @@
 package com.thoughtmechanix.licenses.utils;
 
-import org.fluentd.logger.FluentLogger;
 import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 
@@ -32,24 +31,5 @@ public class UserContext {
     public static String getOrgId() { return orgId.get(); }
     public static void setOrgId(String aOrg) {orgId.set(aOrg);}
 
-    private static FluentLogger FLOG = FluentLogger.getLogger("tmx", "fluentd", 24224);
-
-    public static final void flog(String message){
-        Map<String, Object> data = new HashMap<String, Object>();
-        String log = "{'serviceName':'%s'," +
-                "'correlationId':'%s'," +
-                "'organizationId':'%s'," +
-                "'userId':'%s'," +
-                "'message':'%s'}";
-
-        String msg = String.format(log,
-                                   "LICENSING",
-                                   getCorrelationId(),
-                                   getOrgId(),
-                                   getUserId(),
-                                   message);
-        data.put("tmxdata",msg );
-        FLOG.log("tmx",data);
-    }
 
 }
