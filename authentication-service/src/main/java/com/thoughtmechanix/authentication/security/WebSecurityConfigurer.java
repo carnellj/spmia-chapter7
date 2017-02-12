@@ -8,7 +8,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.core.userdetails.UserDetailsService;
 
 
-//@Configuration
+@Configuration
 public class WebSecurityConfigurer extends WebSecurityConfigurerAdapter {
         @Override
     @Bean
