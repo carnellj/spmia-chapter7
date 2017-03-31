@@ -24,7 +24,7 @@ services:
         CONFIGSERVER_URI: "http://configserver:8888"
         EUREKASERVER_URI: "http://eurekaserver:8761/eureka/"
   database:
-      image: postgres
+      image: postgres:9.5
       ports:
         - "5432:5432"
       environment:
