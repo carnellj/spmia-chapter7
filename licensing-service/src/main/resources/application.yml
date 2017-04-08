@@ -1,9 +1,3 @@
-spring:
-  application:
-    name: licensingservice
-  profiles:
-    active:
-      default
 
 security:
   oauth2:
