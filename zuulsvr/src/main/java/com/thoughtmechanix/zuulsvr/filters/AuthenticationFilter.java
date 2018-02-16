@@ -16,7 +16,6 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 
-@Component
 public class AuthenticationFilter extends ZuulFilter {
     private static final int FILTER_ORDER =  2;
     private static final boolean  SHOULD_FILTER=false;
