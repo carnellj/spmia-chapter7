@@ -1,5 +1,7 @@
 package com.thoughtmechanix.organization.security;
 
+import com.thoughtmechanix.organization.config.ServiceConfig;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Primary;
@@ -10,6 +12,10 @@ import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 @Configuration
 public class JWTTokenStoreConfig {
+
+    @Autowired
+    private ServiceConfig serviceConfig;
+
     //JWT
     @Bean
     public TokenStore tokenStore() {
@@ -31,7 +37,7 @@ public class JWTTokenStoreConfig {
     @Bean
     public JwtAccessTokenConverter jwtAccessTokenConverter() {
         JwtAccessTokenConverter converter = new JwtAccessTokenConverter();
-        converter.setSigningKey("345345fsdfsf5345");
+        converter.setSigningKey(serviceConfig.getJwtSigningKey());
         return converter;
     }
 
